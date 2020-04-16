@@ -1,0 +1,48 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+<h2>{{ title }}</h2>
+<h3>{{ message }}</h3>
+<h4> {{year}}</h4>
+<head>
+
+    </head>
+
+
+    <body>
+        <table style="width:100%">
+            <tr>
+                <th><img src="https://nikoor.files.wordpress.com/2014/01/climate-change_1509200c.jpg" alt="Girl in a jacket" style="width:400px;height:300px;">
+                <th><img src="https://anochi.com/wp-content/uploads/2012/04/2degrees_425.jpg" alt="Girl in a jacket" style="width:400px;height:300px;">
+                <th><img src="https://images1.calcalist.co.il/PicServer3/2019/08/04/924898/11_p.jpg" alt="Girl in a jacket" style="width:400px;height:300px;">
+
+            </tr>
+
+        </table>
+
+
+        <p>In this page you can see the databases that I will be using in this project about global warming and energy use and how its connected</p>
+        <button data-target="#collapse" data-toggle="collapse" class="btn btn-default">Dataset</button>
+
+        <div id="collapse" class="collapse">
+            <table style="width:100%">
+                <tr>
+                    <th>Global warming</th>
+                    <th>Global Eneregy use</th>
+                </tr>
+
+                <tr>
+                    <td><p><a href="{{ url_for('Dataone') }}">Dataset 1</a></p></td>
+ 
+                </tr>
+                <tr>
+                    <td><p><a href="{{ url_for('Datatwo') }}">Dataset 2</a></p></td>
+                </tr>
+
+            </table>
+        </div>
+
+        
+    </body>
+{% endblock %}
