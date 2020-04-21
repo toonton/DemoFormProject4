@@ -32,6 +32,9 @@
     <Compile Include="DemoFormProject\Models\LocalDatabaseRoutines.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="DemoFormProject\Models\Forms.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="DemoFormProject\Models\QueryFormStructure.py">
       <SubType>Code</SubType>
     </Compile>
@@ -55,8 +58,8 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="DemoFormProject\static\Data\Global.csv" />
+    <Content Include="DemoFormProject\static\Data\Pokemon.csv" />
     <Content Include="DemoFormProject\static\Data\users.csv" />
-    <Content Include="DemoFormProject\static\Data\capitals.csv" />
     <Content Include="DemoFormProject\static\Pics\pic1.jpg" />
     <Content Include="DemoFormProject\templates\register.html" />
     <Content Include="DemoFormProject\templates\login.html" />
