@@ -18,7 +18,7 @@
     <Name>DemoFormProject</Name>
     <RootNamespace>DemoFormProject</RootNamespace>
     <SuppressEnvironmentCreationPrompt>True</SuppressEnvironmentCreationPrompt>
-    <InterpreterId>MSBuild|conda|$(MSBuildProjectFullPath)</InterpreterId>
+    <InterpreterId>MSBuild|env1|$(MSBuildProjectFullPath)</InterpreterId>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <DebugSymbols>true</DebugSymbols>
@@ -40,8 +40,8 @@
     </Compile>
     <Compile Include="runserver.py" />
     <Compile Include="DemoFormProject\__init__.py" />
-    <Compile Include="..\..\..\Desktop\the best project.py">
-      <Link>DemoFormProject\the best project.py</Link>
+    <Compile Include="DemoFormProject\views.py">
+      <SubType>Code</SubType>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -99,10 +99,10 @@
     <Content Include="DemoFormProject\templates\layout.html" />
   </ItemGroup>
   <ItemGroup>
-    <Interpreter Include="conda\">
-      <Id>conda</Id>
+    <Interpreter Include="env1\">
+      <Id>env1</Id>
       <Version>3.8</Version>
-      <Description>conda (Python 3.8 (32-bit))</Description>
+      <Description>env1 (Python 3.8 (32-bit))</Description>
       <InterpreterPath>Scripts\python.exe</InterpreterPath>
       <WindowsInterpreterPath>Scripts\pythonw.exe</WindowsInterpreterPath>
       <PathEnvironmentVariable>PYTHONPATH</PathEnvironmentVariable>

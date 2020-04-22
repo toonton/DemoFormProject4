@@ -2,11 +2,10 @@
 Routes and views for the flask application.
 """
 
+from DemoFormProject import app
 from datetime import datetime
 from flask import render_template
-from DemoFormProject import app
 from DemoFormProject.Models.LocalDatabaseRoutines import create_LocalDatabaseServiceRoutines
-
 
 from datetime import datetime
 from flask import render_template, redirect, request
@@ -48,7 +47,7 @@ def home():
     """Renders the home page."""
     return render_template(
         'index.html',
-        title='Home Page',
+        title='matan home page',
         year=datetime.now().year,
     )
 
@@ -62,12 +61,12 @@ def contact():
         message='Your contact page.'
     )
 
-@app.route('/about')
-def about():
+@app.route('/About')
+def About():
     """Renders the about page."""
     return render_template(
-        'about.html',
-        title='About',
+        'About.html',
+        title='About my website',
         year=datetime.now().year,
         message='Your application description page.'
     )
@@ -82,6 +81,27 @@ def Data():
         
        
     )
+
+
+
+@app.route('/Datatwo')
+def Datatwo():
+
+    df = pd.read_csv(path.join(path.dirname(__file__), 'static\\Data\\Global.csv'))
+    raw_data_table = df.to_html(classes = 'table table-hover')
+
+
+    """Renders the contact page."""
+    return render_template(
+        'Datatwo.html',
+        title='Global warming Database',
+        raw_data_table = raw_data_table,
+        year=datetime.now().year,
+        message='aaaa'
+    )
+
+
+
 @app.route('/Dataone')
 def Dataone():
 
@@ -97,6 +117,9 @@ def Dataone():
         year=datetime.now().year,
         message='gamer'
     )
+
+
+
 @app.route('/Album')
 def Album():
     """Renders the about page."""
@@ -111,31 +134,29 @@ def Album():
 @app.route('/Query', methods=['GET', 'POST'])
 def Query():
 
+    df = pd.read_csv(path.join(path.dirname(__file__), 'static\\Data\\Pokemon.csv'))
+    print("im in query")
     Name = None
     Country = ''
-    capital = ''
-    df = pd.read_csv(path.join(path.dirname(__file__), 'static\\Data\\capitals.csv'))
-    df = df.set_index('Country')
+
+    df = pd.read_csv(path.join(path.dirname(__file__), 'static\\Data\\Pokemon.csv'))
+    Pokemon_choise = list(set(df['Name']))
+    m = list(zip(Pokemon_choise , Pokemon_choise))
+    form1.Pokemon.choices = m 
+    form2.Pokemon.choices = m
+
+
+
+
+    
+    
 
     form = QueryFormStructure(request.form)
      
-    if (request.method == 'POST' ):
-        name = form.name.data
-        Country = name
-        if (name in df.index):
-            capital = df.loc[name,'Capital']
-        else:
-            capital = name + ', no such country'
-        form.name.data = ''
-
-    df = pd.read_csv(path.join(path.dirname(__file__), 'static\\Data\\users.csv'))
-
     raw_data_table = df.to_html(classes = 'table table-hover')
 
     return render_template('Query.html', 
-            form = form, 
-            name = capital, 
-            Country = Country,
+           
             raw_data_table = raw_data_table,
             title='Query by the user',
             year=datetime.now().year,
@@ -146,29 +167,29 @@ def Query():
 # Register new user page
 # -------------------------------------------------------
 @app.route('/register', methods=['GET', 'POST'])
-def Register():
-    form = UserRegistrationFormStructure(request.form)
+def register():
+	form = UserRegistrationFormStructure(request.form)
 
-    if (request.method == 'POST' and form.validate()):
-        if (not db_Functions.IsUserExist(form.username.data)):
-            db_Functions.AddNewUser(form)
-            db_table = ""
+	if (request.method == 'POST'):
+		if form.validate():
+			if (not db_Functions.IsUserExist(form.username.data)):
+				db_Functions.AddNewUser(form)
+				db_table = ""
 
-            flash('Thanks for registering new user - '+ form.FirstName.data + " " + form.LastName.data )
-            # Here you should put what to do (or were to go) if registration was good
-            
+				flash('Welcome '+ form.FirstName.data + " " + form.LastName.data + "!")
+			else:
+				flash('Error: User ' + form.username.data + ' already exists.')
+				form = UserRegistrationFormStructure(request.form)
+		else:
+			flash('Some fields are invalid.')
 
-        else:
-            flash('Error: User with this Username already exist ! - '+ form.username.data)
-            form = UserRegistrationFormStructure(request.form)
-
-    return render_template(
-        'register.html', 
-        form=form, 
-        title='Register New User',
-        year=datetime.now().year,
-        repository_name='Pandas',
-        )
+	return render_template(
+		'register.html', 
+		form=form, 
+		title=mutualtitle + ' - Register',
+		year=datetime.now().year,
+		repository_name='Pandas',
+		)
 
 # -------------------------------------------------------
 # Login page
@@ -192,4 +213,5 @@ def Login():
         year=datetime.now().year,
         repository_name='Pandas',
         )
+
 
