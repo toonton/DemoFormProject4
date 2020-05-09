@@ -5,7 +5,7 @@
 from datetime import datetime
 
 from flask_wtf import FlaskForm
-from wtforms import StringField, SubmitField
+from wtforms import StringField, SubmitField, SelectMultipleField
 from wtforms import Form, BooleanField, PasswordField
 from wtforms import TextField, TextAreaField, SelectField, DateField
 from wtforms import validators, ValidationError
@@ -22,9 +22,10 @@ from wtforms.validators import DataRequired
 ##   the 'submit' button - the button the user will press to have the 
 ##                         form be "posted" (sent to the server for process)
 class QueryFormStructure(FlaskForm):
-
-    name   = StringField('Country Name:  ' , validators = [DataRequired()])
-    submit = SubmitField('Submit')
+    pokemon1 = SelectField('Pokemon 1:', validators=[DataRequired()])
+    pokemon2 = SelectField('Pokemon 2:', validators=[DataRequired()])
+    stat = SelectField('Stat :', validators=[DataRequired()])
+    submit = SubmitField('Confirm')    
     
 
 

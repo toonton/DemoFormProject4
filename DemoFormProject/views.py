@@ -134,38 +134,44 @@ def Album():
 @app.route('/Query', methods=['GET', 'POST'])
 def Query():
 
+    form = QueryFormStructure(request.form)
+
     df = pd.read_csv(path.join(path.dirname(__file__), 'static\\Data\\Pokemon.csv'))
-    print("im in query")
-    Name = None
-    Country = ''
+    #print("im in query")
+   
     Pokemon_choise = list(set(df['Name']))
     m = list(zip(Pokemon_choise , Pokemon_choise))
-    
-    pokemon1 = StringField('Pokemon1', validators=[DataRequired(m)])
-    pokemon2 = StringField('Pokemon2', validators=[DataRequired(m)])
-    stat = StringField('Stat', validators=[DataRequired()])
-    submit = SubmitField('Confirm')
-    dpokemon1 = df[df['Name'] == pokemon1]
-    dpokemon2 = df[df['Name'] == pokemon2]
-    stat1 = dpokemon1.set_index([stat])
-    stat2 = dpokemon2.set_index([stat])
-    d = {'Name': [pokemon1 , pokemon2], 'Stat': [stat1 , stat2]}
-    df2 = pd.Dataframe(Data=d)
-    pog = df2.plot.bar(y= stat, rot=0)
-    bar_graph = pog
+
+    stats = ['ATK', 'SPD']
+    m1 = list(zip(stats, stats))
 
 
-    d = {'Name': [], 'avg Speed': [mean_fi, mean_wa, mean_gr, mean_st, mean_ro, mean_gr, mean_fa, mean_el, mean_da, mean_dr, mean_no, mean_fi, mean_ps, mean_gh, mean_ic, mean_bu, mean_po, mean_fl]}
-    df1 = pd.DataFrame(data=d)
-    df1
+    form.pokemon1.choices = m
+    form.pokemon2.choices = m
+
+    form.stat.choices = m1
 
 
-    form = QueryFormStructure(request.form)
+    if (request.method == 'POST'):
+        dpokemon1 = df[df['Name'] == pokemon1]
+        dpokemon2 = df[df['Name'] == pokemon2]
+        stat1 = dpokemon1.set_index([stat])
+        stat2 = dpokemon2.set_index([stat])
+        d = {'Name': [pokemon1 , pokemon2], 'Stat': [stat1 , stat2]}
+        df2 = pd.Dataframe(Data=d)
+        pog = df2.plot.bar(y= stat, rot=0)
+        bar_graph = pog
+
+
+        d = {'Name': [], 'avg Speed': [mean_fi, mean_wa, mean_gr, mean_st, mean_ro, mean_gr, mean_fa, mean_el, mean_da, mean_dr, mean_no, mean_fi, mean_ps, mean_gh, mean_ic, mean_bu, mean_po, mean_fl]}
+        df1 = pd.DataFrame(data=d)
+        df1
+
      
     raw_data_table = df.to_html(classes = 'table table-hover')
 
     return render_template('Query.html', 
-           
+            form = form,
             raw_data_table = raw_data_table,
             title='Query by the user',
             year=datetime.now().year,

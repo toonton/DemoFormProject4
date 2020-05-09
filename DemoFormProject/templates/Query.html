@@ -1,34 +1,62 @@
 {% extends "layout.html" %}
 
-{% import "bootstrap/wtf.html" as wtf %}
-
 {% block content %}
 
 <h2>{{title}}</h2>
 
 <p>This page will enable the user to input a data field</p>
 
+<h5> PUT YOUR POKEMONS! </h5>
 
-<form method="post" action="">
+<form method="post">
     {{ form.csrf }}
-    <fieldset class="form-group">
-    <h5> PUT YOUR POKEMONS! </h5>
-    <dir class="form-group">
-        {{ form.pokemon1.label(class="form-control-label") }}
-        {{ form.pokemon1.label(class="form-control form-control-lg") }}
-    </dir>
-    <dir class="form-group">
-        {{ form.pokemon2.label(class="form-control-label") }}
-        {{ form.pokemon2.label(class="form-control form-control-lg") }}
-    </dir>
-    <dir class="form-group">
-        {{ form.stat.label(class="form-control-label") }}
-        {{ form.stat.label(class="form-control form-control-lg") }}
-    </dir>
-    </fieldset>
-    <div class="form-group">
-        {{ form.submit(class="btn btn-outline-info") }}
-    </div>
+    {{ form.csrf_token }}
+    <table>
+        <tr>
+            <td>
+                {{ form.pokemon1.label }}
+            </td>
+            <td>
+                {{ form.pokemon1 }}
+            </td>
+            <td>
+                {% if form.pokemon1.errors %}
+                <ul class="text-danger">{% for error in form.pokemon1.errors %}<li>{{ error }}</li>{% endfor %}</ul>
+                {% endif %}
+            </td>
+        </tr>
+        <tr>
+            <td>
+                {{ form.pokemon2.label }}
+            </td>
+            <td>
+                {{ form.pokemon2 }}
+            </td>
+            <td>
+                {% if form.pokemon2.errors %}
+                <ul class="text-danger">{% for error in form.pokemon2.errors %}<li>{{ error }}</li>{% endfor %}</ul>
+                {% endif %}
+            </td>
+        </tr>
+        <tr>
+            <td>
+                {{ form.stat.label }}
+            </td>
+            <td>
+                {{ form.stat }}
+            </td>
+            <td>
+                {% if form.stat.errors %}
+                <ul class="text-danger">{% for error in form.stat.errors %}<li>{{ error }}</li>{% endfor %}</ul>
+                {% endif %}
+            </td>
+        </tr>
+        <tr>
+            <td></td>
+            <td class="input submit"> <input type="submit" value="Caculate"> </td>
+        </tr>
+    </table>
+
 </form>
 
 <h3> graph is </h3>
