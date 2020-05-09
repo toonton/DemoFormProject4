@@ -4,7 +4,7 @@ Routes and views for the flask application.
 
 from DemoFormProject import app
 from datetime import datetime
-from flask import render_template
+from flask import Flask, render_template, url_for, flash 
 from DemoFormProject.Models.LocalDatabaseRoutines import create_LocalDatabaseServiceRoutines
 
 from datetime import datetime
@@ -138,18 +138,27 @@ def Query():
     print("im in query")
     Name = None
     Country = ''
-
-    df = pd.read_csv(path.join(path.dirname(__file__), 'static\\Data\\Pokemon.csv'))
     Pokemon_choise = list(set(df['Name']))
     m = list(zip(Pokemon_choise , Pokemon_choise))
-    form1.Pokemon.choices = m 
-    form2.Pokemon.choices = m
-
-
-
-
     
-    
+    pokemon1 = StringField('Pokemon1', validators=[DataRequired(m)])
+    pokemon2 = StringField('Pokemon2', validators=[DataRequired(m)])
+    stat = StringField('Stat', validators=[DataRequired()])
+    submit = SubmitField('Confirm')
+    dpokemon1 = df[df['Name'] == pokemon1]
+    dpokemon2 = df[df['Name'] == pokemon2]
+    stat1 = dpokemon1.set_index([stat])
+    stat2 = dpokemon2.set_index([stat])
+    d = {'Name': [pokemon1 , pokemon2], 'Stat': [stat1 , stat2]}
+    df2 = pd.Dataframe(Data=d)
+    pog = df2.plot.bar(y= stat, rot=0)
+    bar_graph = pog
+
+
+    d = {'Name': [], 'avg Speed': [mean_fi, mean_wa, mean_gr, mean_st, mean_ro, mean_gr, mean_fa, mean_el, mean_da, mean_dr, mean_no, mean_fi, mean_ps, mean_gh, mean_ic, mean_bu, mean_po, mean_fl]}
+    df1 = pd.DataFrame(data=d)
+    df1
+
 
     form = QueryFormStructure(request.form)
      
@@ -166,8 +175,8 @@ def Query():
 # -------------------------------------------------------
 # Register new user page
 # -------------------------------------------------------
-@app.route('/register', methods=['GET', 'POST'])
-def register():
+@app.route('/Register', methods=['GET', 'POST'])
+def Register():
 	form = UserRegistrationFormStructure(request.form)
 
 	if (request.method == 'POST'):

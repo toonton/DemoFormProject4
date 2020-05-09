@@ -9,21 +9,31 @@
 <p>This page will enable the user to input a data field</p>
 
 
-<form method=post>
+<form method="post" action="">
     {{ form.csrf }}
-    <table>
-        <tr>
-            <td class="input text"> {{ form1.Pokemon.choices}} </td>
-            <td>                    {{ form2.Pokemon.choices }}       </td>
-        </tr>
-        <tr>
-            <td></td>
-            <td class="input submit"> <input type="submit" value="Capital"> </td>
-        </tr>
-    </table>
+    <fieldset class="form-group">
+    <h5> PUT YOUR POKEMONS! </h5>
+    <dir class="form-group">
+        {{ form.pokemon1.label(class="form-control-label") }}
+        {{ form.pokemon1.label(class="form-control form-control-lg") }}
+    </dir>
+    <dir class="form-group">
+        {{ form.pokemon2.label(class="form-control-label") }}
+        {{ form.pokemon2.label(class="form-control form-control-lg") }}
+    </dir>
+    <dir class="form-group">
+        {{ form.stat.label(class="form-control-label") }}
+        {{ form.stat.label(class="form-control form-control-lg") }}
+    </dir>
+    </fieldset>
+    <div class="form-group">
+        {{ form.submit(class="btn btn-outline-info") }}
+    </div>
 </form>
 
-<p><h1>Capital of {{Country}} is : <b>{{name}}</b></h1></p>
+<h3> graph is </h3>
+{{bar_graph | safe}}
+
 
 <h3> Table is </h3>
 

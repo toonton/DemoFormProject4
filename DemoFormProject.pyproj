@@ -99,6 +99,9 @@
     <Content Include="DemoFormProject\templates\layout.html" />
   </ItemGroup>
   <ItemGroup>
+    <InterpreterReference Include="CondaEnv|CondaEnv|env5" />
+  </ItemGroup>
+  <ItemGroup>
     <Interpreter Include="env1\">
       <Id>env1</Id>
       <Version>3.8</Version>
