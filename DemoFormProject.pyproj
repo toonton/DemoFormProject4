@@ -63,13 +63,9 @@
     <Content Include="DemoFormProject\static\Pics\pic1.jpg" />
     <Content Include="DemoFormProject\templates\register.html" />
     <Content Include="DemoFormProject\templates\login.html" />
-    <Content Include="DemoFormProject\templates\PictureAlbum.html" />
     <Content Include="DemoFormProject\templates\Query.html" />
     <Content Include="DemoFormProject\templates\Dataone.html" />
     <Content Include="DemoFormProject\templates\About.html" />
-    <Content Include="DemoFormProject\templates\DataE.html" />
-    <Content Include="DemoFormProject\templates\Datatwo.html" />
-    <Content Include="DemoFormProject\templates\WebPage1.html" />
     <Content Include="requirements.txt" />
     <Content Include="DemoFormProject\static\content\bootstrap.css" />
     <Content Include="DemoFormProject\static\content\bootstrap.min.css" />

@@ -6,6 +6,7 @@ from DemoFormProject import app
 from datetime import datetime
 from flask import Flask, render_template, url_for, flash 
 from DemoFormProject.Models.LocalDatabaseRoutines import create_LocalDatabaseServiceRoutines
+from matplotlib.backends.backend_agg import FigureCanvasAgg as FigureCanvas
 
 from datetime import datetime
 from flask import render_template, redirect, request
@@ -39,6 +40,13 @@ from DemoFormProject.Models.QueryFormStructure import UserRegistrationFormStruct
 ###from DemoFormProject.Models.LocalDatabaseRoutines import IsUserExist, IsLoginGood, AddNewUser 
 
 db_Functions = create_LocalDatabaseServiceRoutines() 
+#for changing the graphs to images
+def plot_to_img(fig):
+    pngImage = io.BytesIO()
+    FigureCanvas(fig).print_png(pngImage)
+    pngImageB64String = "data:image/png;base64,"
+    pngImageB64String += base64.b64encode(pngImage.getvalue()).decode('utf8')
+    return pngImageB64String
 
 
 @app.route('/')
@@ -82,98 +90,77 @@ def Data():
        
     )
 
-
-
-@app.route('/Datatwo')
-def Datatwo():
-
-    df = pd.read_csv(path.join(path.dirname(__file__), 'static\\Data\\Global.csv'))
-    raw_data_table = df.to_html(classes = 'table table-hover')
-
-
-    """Renders the contact page."""
-    return render_template(
-        'Datatwo.html',
-        title='Global warming Database',
-        raw_data_table = raw_data_table,
-        year=datetime.now().year,
-        message='aaaa'
-    )
-
-
-
 @app.route('/Dataone')
 def Dataone():
-
-    df = pd.read_csv(path.join(path.dirname(__file__), 'static\\Data\\Global.csv'))
+    #this is the page that lets you see the database 
+    df = pd.read_csv(path.join(path.dirname(__file__), 'static\\Data\\Pokemon.csv'))
     raw_data_table = df.to_html(classes = 'table table-hover')
 
 
     """Renders the contact page."""
     return render_template(
         'Dataone.html',
-        title='Global warming Database',
         raw_data_table = raw_data_table,
-        year=datetime.now().year,
-        message='gamer'
     )
 
-
-
-@app.route('/Album')
-def Album():
-    """Renders the about page."""
-    return render_template(
-        'PictureAlbum.html',
-        title='Pictures',
-        year=datetime.now().year,
-        message='Welcome to my picture album'
-    )
 
 
 @app.route('/Query', methods=['GET', 'POST'])
 def Query():
 
     form = QueryFormStructure(request.form)
-
-    df = pd.read_csv(path.join(path.dirname(__file__), 'static\\Data\\Pokemon.csv'))
-    #print("im in query")
+    chart = ''
+    df = pd.read_csv(path.join(path.dirname(__file__), 'static\\Data\\Pokemon.csv'))#setting df to be the database
+    raw_data_table = df.to_html(classes = 'table table-hover')#turning the table to html
    
     Pokemon_choise = list(set(df['Name']))
-    m = list(zip(Pokemon_choise , Pokemon_choise))
+    m = list(zip(Pokemon_choise , Pokemon_choise))#making a list for so the user can choose pokemons from there
 
-    stats = ['ATK', 'SPD']
+    stats = ['HP', 'Sp. Atk','Attack', 'Defense' , 'Sp. Def' , 'Speed']#making a list for the stat so the user can choose
     m1 = list(zip(stats, stats))
 
 
     form.pokemon1.choices = m
-    form.pokemon2.choices = m
+    form.pokemon2.choices = m 
 
     form.stat.choices = m1
 
 
     if (request.method == 'POST'):
-        dpokemon1 = df[df['Name'] == pokemon1]
-        dpokemon2 = df[df['Name'] == pokemon2]
-        stat1 = dpokemon1.set_index([stat])
-        stat2 = dpokemon2.set_index([stat])
-        d = {'Name': [pokemon1 , pokemon2], 'Stat': [stat1 , stat2]}
-        df2 = pd.Dataframe(Data=d)
-        pog = df2.plot.bar(y= stat, rot=0)
-        bar_graph = pog
+        dpokemon1 = form.pokemon1.data #taking the pokemon name the user choose
+        dpokemon2 = form.pokemon2.data
+        stat = form.stat.data #taking the stat from the user
+        fig = plt.figure() #making a spot for the graph
+        dfp = df[df['Name'].isin([dpokemon1 , dpokemon2])] #making a table only with the two pokemons the user choose
+        if (stat != 'HP'): #deleting every colusm that isnt the one the user choose 
+            dfp = dfp.drop(columns=['HP'])
+        if (stat != 'Sp. Atk'):
+            dfp = dfp.drop(columns=['Sp. Atk'])
+        if (stat != 'Defense'):
+            dfp = dfp.drop(columns=['Defense'])
+        if (stat != 'Sp. Def'):
+            dfp = dfp.drop(columns=['Sp. Def'])
+        if (stat != 'Speed'):
+            dfp = dfp.drop(columns=['Speed'])
+        if (stat != 'Attack'):
+            dfp = dfp.drop(columns=['Attack'])
+        if (stat != 'Total'):
+            dfp = dfp.drop(columns=['Total'])
+        if (stat != 'Generation'):
+            dfp = dfp.drop(columns=['Generation'])
+        if (stat != '#'):
+            dfp = dfp.drop(columns=['#'])
+        ax = fig.add_subplot(111)
+        dfp.set_index('Name')[stat].plot(kind='pie') #making the graph choosing it will be pie graph
+        chart = plot_to_img(fig) #changing the graph to image
 
 
-        d = {'Name': [], 'avg Speed': [mean_fi, mean_wa, mean_gr, mean_st, mean_ro, mean_gr, mean_fa, mean_el, mean_da, mean_dr, mean_no, mean_fi, mean_ps, mean_gh, mean_ic, mean_bu, mean_po, mean_fl]}
-        df1 = pd.DataFrame(data=d)
-        df1
-
-     
-    raw_data_table = df.to_html(classes = 'table table-hover')
-
-    return render_template('Query.html', 
+    return render_template('Query.html', #returning everything i did until now so the html can use it to make the website page 
             form = form,
             raw_data_table = raw_data_table,
-            title='Query by the user',
+            chart = chart,
+            height = "500",
+            width = "500",
             year=datetime.now().year,
             message='This page will use the web forms to get user input'
         )
@@ -181,31 +168,27 @@ def Query():
 # -------------------------------------------------------
 # Register new user page
 # -------------------------------------------------------
-@app.route('/Register', methods=['GET', 'POST'])
+@app.route('/register', methods=['GET', 'POST'])
 def Register():
-	form = UserRegistrationFormStructure(request.form)
+    form = UserRegistrationFormStructure(request.form)
 
-	if (request.method == 'POST'):
-		if form.validate():
-			if (not db_Functions.IsUserExist(form.username.data)):
-				db_Functions.AddNewUser(form)
-				db_table = ""
+    if (request.method == 'POST' and form.validate()):
+        if (not db_Functions.IsUserExist(form.username.data)):
+            db_Functions.AddNewUser(form)
+            db_table = ""
+            flash('Thanks for registering new user - '+ form.FirstName.data + " " + form.LastName.data )
+            return redirect('/login')
+        else:
+            flash('Error: User with this Username already exist ! - '+ form.username.data)
+            form = UserRegistrationFormStructure(request.form)
 
-				flash('Welcome '+ form.FirstName.data + " " + form.LastName.data + "!")
-			else:
-				flash('Error: User ' + form.username.data + ' already exists.')
-				form = UserRegistrationFormStructure(request.form)
-		else:
-			flash('Some fields are invalid.')
-
-	return render_template(
-		'register.html', 
-		form=form, 
-		title=mutualtitle + ' - Register',
-		year=datetime.now().year,
-		repository_name='Pandas',
-		)
-
+    return render_template(
+        'register.html', 
+        form=form, 
+        title='Register New User',
+        year=datetime.now().year,
+        repository_name='Pandas',
+        )
 # -------------------------------------------------------
 # Login page
 # This page is the filter before the data analysis
@@ -216,7 +199,7 @@ def Login():
 
     if (request.method == 'POST' and form.validate()):
         if (db_Functions.IsLoginGood(form.username.data, form.password.data)):
-            flash('Login approved!')
+            return redirect('/Query')
             #return redirect('<were to go if login is good!')
         else:
             flash('Error in - Username and/or password')

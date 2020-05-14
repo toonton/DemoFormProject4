@@ -2,15 +2,16 @@
 
 {% block content %}
 
-<h2>{{ title }}.</h2>
-<h3>{{ message }}</h3>
+<h2>The DataBase.</h2>
+<h3>Pokemon information</h3>
 
-<p>Here is all of the Data about the global warming around the world.</p>
-<button data-target="#collapse" data-toggle="collapse" class="btn btn-default">Dataset</button>
+<p>Here is the Database about the pokemons and all theres stats.</p>
 
+<button data-target="#collapse" data-toggle="collapse" class="btn btn-default">Dataset</button> 
 <div id="collapse" class="collapse">
     {{ raw_data_table | safe}}
 </div>
+<img src="https://www.nintendo-insider.com/wp-content/uploads/2018/02/bulbasaur-anime-screenshot.jpg" alt="Girl in a jacket" style="width:400px;height:300px;"> 
 
 
 

@@ -56,17 +56,24 @@
             <td class="input submit"> <input type="submit" value="Caculate"> </td>
         </tr>
     </table>
+    <div class="row">
+        <table>
+            <tr>
+                <td>
+                    <h3> graph is </h3>
+                    <img src={{ chart }} class="img-thumbnail" alt="graph" height={{height}} width={{ width }}>
+                </td>
+            </tr>
+        </table>
+    </div>
 
 </form>
 
-<h3> graph is </h3>
-{{bar_graph | safe}}
-
-
 <h3> Table is </h3>
-
-{{ raw_data_table | safe}}
-
+<button data-target="#collapse" data-toggle="collapse" class="btn btn-default">Dataset</button>
+<div id="collapse" class="collapse">
+    {{ raw_data_table | safe}}
+</div>
 
     {% endblock %}
 
