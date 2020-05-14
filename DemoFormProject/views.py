@@ -116,7 +116,7 @@ def Query():
     Pokemon_choise = list(set(df['Name']))
     m = list(zip(Pokemon_choise , Pokemon_choise))#making a list for so the user can choose pokemons from there
 
-    stats = ['HP', 'Sp. Atk','Attack', 'Defense' , 'Sp. Def' , 'Speed']#making a list for the stat so the user can choose
+    stats = ['HP', 'Sp. Atk','Attack', 'Defense' , 'Sp. Def' , 'Speed', 'Total']#making a list for the stat so the user can choose
     m1 = list(zip(stats, stats))
 
 
